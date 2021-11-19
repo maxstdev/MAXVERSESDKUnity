@@ -151,7 +151,6 @@ public class MaxstSceneManager : MonoBehaviour
 		}
 		
 		TrackerManager.GetInstance().StartTracker();
-		//TrackerManager.GetInstance().AddTrackerData("{\"vps_server\":\"leeum\"}");
 	}
 
 	void Update()
