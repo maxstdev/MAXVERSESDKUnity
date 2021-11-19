@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: f9a153490559e25479e8b47c65da3038
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - IbrCullBack: {fileID: 2100000, guid: 75598ac40e7058e4abcaeeb3a5095f5d, type: 2}
+  - IbrCullFront: {fileID: 2100000, guid: 00eac6b3c5c32054abee333fbec84b41, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

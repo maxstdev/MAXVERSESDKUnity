@@ -1,0 +1,26 @@
+Open Source Software Notice (VPS AR SDK 0.8.0)
+==================================================================================
+
+OpenCV
+http://opencv.org/license.html
+3-clause BSD License
+
+
+jsoncpp
+Copyright 2007-2010 Baptiste Lepilleur
+http://jsoncpp.sourceforge.net/LICENSE
+MIT License
+
+
+Eigen
+http://eigen.tuxfamily.org/index.php?title=Main_Page#License
+Mozilla Public License version 2.0
+
+JSON Web Tokens
+Copyright 2013-2014 Auth0 Inc.
+https://github.com/jsonwebtoken/jsonwebtoken.github.io/blob/master/LICENSE.txt
+MIT License
+
+= Android Runtime Permissions =
+https://github.com/yasirkula/UnityAndroidRuntimePermissions
+MIT License
