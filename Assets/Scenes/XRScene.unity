@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3708,7 +3708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1.7714572
+  m_ScaleFactor: 0.5988024
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
@@ -8390,7 +8390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableObjects: []
   occlusionObjects:
-  - {fileID: 530868492392257060}
+  - {fileID: 0}
   buildingMaterial: {fileID: 2100000, guid: 10c88969f8affaa4aa27ca5ff2336e69, type: 2}
   runtimeBuildingMaterial: {fileID: 2100000, guid: 778ede05ca51c4cb59367f2b91bdefa3, type: 2}
   maxstLogObject: {fileID: 0}
@@ -55151,7 +55151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7068059249072869786, guid: 9486b87e123b44ce5875be626132b942, type: 3}
       propertyPath: xrPath
-      value: /Users/acper/work/VPS_Studio/XRSDK_github/Assets/../../XRData/XRMap/insadong_outdoor
+      value: C:/Users/acper/Desktop/work/VPS_Studio/MAXVERSESDKUnity/Assets/../../XRData/XRMap\insadong_outdoor
       objectReference: {fileID: 0}
     - target: {fileID: 7068059249072869786, guid: 9486b87e123b44ce5875be626132b942, type: 3}
       propertyPath: meshObject
@@ -55159,15 +55159,15 @@ PrefabInstance:
       objectReference: {fileID: 1821501687}
     - target: {fileID: 7068059249072869786, guid: 9486b87e123b44ce5875be626132b942, type: 3}
       propertyPath: selectIndex
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7068059249072869786, guid: 9486b87e123b44ce5875be626132b942, type: 3}
       propertyPath: xrSimulatePath
-      value: /Users/acper/work/VPS_Studio/XRSDK_github/Assets/../../XRData/XRSimulationData/insadong_outdoor/jongno_outdoor_test_port_00001_220513
+      value: C:/Users/acper/Desktop/work/VPS_Studio/MAXVERSESDKUnity/Assets/../../XRData/XRSimulationData/insadong_outdoor\jongno_outdoor_test_port_00001_220513
       objectReference: {fileID: 0}
     - target: {fileID: 7068059249072869786, guid: 9486b87e123b44ce5875be626132b942, type: 3}
       propertyPath: simulate_selectIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7068059249072869789, guid: 9486b87e123b44ce5875be626132b942, type: 3}
       propertyPath: m_RootOrder
@@ -67411,11 +67411,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4784908509961860345, guid: a33c8e389bb4f9341baa514fb6f2bfd0, type: 3}
   m_PrefabInstance: {fileID: 2146397465}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &530868492392257060 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8984881240528140955, guid: 001636ac2d2b44b63bb35724e12bbb11, type: 3}
-  m_PrefabInstance: {fileID: 8930272983046220991}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5539740575917792753
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -67449,15 +67444,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5539740574821781352, guid: d28fa54cb7d57487088a2d29b583fa4e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -55.149555
+      value: -14.531012
       objectReference: {fileID: 0}
     - target: {fileID: 5539740574821781352, guid: d28fa54cb7d57487088a2d29b583fa4e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8659992
+      value: 1.3698158
       objectReference: {fileID: 0}
     - target: {fileID: 5539740574821781352, guid: d28fa54cb7d57487088a2d29b583fa4e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -23.52759
+      value: 47.708874
       objectReference: {fileID: 0}
     - target: {fileID: 5539740574821781352, guid: d28fa54cb7d57487088a2d29b583fa4e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -67604,10 +67599,6 @@ PrefabInstance:
     - target: {fileID: 8930272983640769606, guid: 001636ac2d2b44b63bb35724e12bbb11, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8930272983640769607, guid: 001636ac2d2b44b63bb35724e12bbb11, type: 3}
-      propertyPath: placeId
-      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 8930272983640769608, guid: 001636ac2d2b44b63bb35724e12bbb11, type: 3}
       propertyPath: m_Name
