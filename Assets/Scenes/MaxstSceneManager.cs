@@ -22,10 +22,16 @@ public class MaxstSceneManager : MonoBehaviour
 
 	public bool isOcclusion = true;
 	private string currentLocalizerLocation = "";
+	private int currentLocalizerPlaceId = -1;
 
 	private string serverName = "";
 
 	public GameObject arContent;
+
+	public GameObject arrowPrefab;
+	private List<GameObject> pathObjects = new List<GameObject>();
+	private List<GameObject> arrowItems = new List<GameObject>();
+	public float arrowVisibleDistance = 20.0f;
 
 	void Awake()
 	{
@@ -130,10 +136,9 @@ public class MaxstSceneManager : MonoBehaviour
 		if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor)
         {
 			string simulatePath = XRStudioController.Instance.xrSimulatePath;
-			Debug.Log(simulatePath);
+
 			if (Directory.Exists(simulatePath))
 			{
-				Debug.Log(simulatePath);
 				CameraDevice.GetInstance().Start(simulatePath);
 				MaxstAR.SetScreenOrientation((int)ScreenOrientation.Portrait);
 			}
@@ -151,6 +156,8 @@ public class MaxstSceneManager : MonoBehaviour
 		}
 		
 		TrackerManager.GetInstance().StartTracker();
+		//TrackerManager.GetInstance().ReplaceServerIP("{\"vps_server_ip\":\"http://169.254.241.227:5501\"}");
+		//TrackerManager.GetInstance().AddTrackerData("{\"vps_server\":\"p0000_p0000_indoor_maxst_f2\"}");
 	}
 
 	void Update()
@@ -186,7 +193,6 @@ public class MaxstSceneManager : MonoBehaviour
 
 			string localizerLocation = arFrame.GetARLocalizerLocation();
 
-			Debug.Log(localizerLocation);
 
 			if (currentLocalizerLocation != localizerLocation)
 			{
@@ -199,6 +205,7 @@ public class MaxstSceneManager : MonoBehaviour
 						if (currentLocalizerLocation == eachLocation)
 						{
 							isLocationInclude = true;
+							currentLocalizerPlaceId = eachTrackable.placeId;
 							break;
 						}
 					}
@@ -214,6 +221,8 @@ public class MaxstSceneManager : MonoBehaviour
 			}
 			currentLocalizerLocation = "";
 		}
+
+		UpdateVisibleArrow(arCamera);
 	}
 
 	void OnApplicationPause(bool pause)
@@ -247,6 +256,7 @@ public class MaxstSceneManager : MonoBehaviour
 			}
 
 			TrackerManager.GetInstance().StartTracker();
+			//TrackerManager.GetInstance().ReplaceServerIP("{\"vps_server_ip\":\"http://169.254.241.227:5501\"}");
 		}
 	}
 
@@ -257,8 +267,28 @@ public class MaxstSceneManager : MonoBehaviour
 		TrackerManager.GetInstance().DestroyTracker();
 	}
 
+	public void OnClickGetPOI()
+    {
+		string accessToken = TrackerManager.GetInstance().GetAccessToken();
+
+		Debug.Log(accessToken);
+		if(currentLocalizerPlaceId > 0)
+        {
+			POIController.GetPOI(this, accessToken, currentLocalizerPlaceId, success:(pois)=> {
+				
+			},
+			fail:()=> {
+
+			} );
+		}
+		
+	}
+
 	public void OnClickNavigation()
     {
+		RemovePaths();
+
+		string accessToken = TrackerManager.GetInstance().GetAccessToken();
 		string navigationLocation = "";
 		if (currentLocalizerLocation != null)
 		{
@@ -278,13 +308,75 @@ public class MaxstSceneManager : MonoBehaviour
 
 			if (trackingObject != null)
 			{
-				NavigationController navigationController = GetComponent<NavigationController>();
-
-				navigationController.MakePath(navigationLocation, arCamera.transform.position, "landmark_coex_f1", new Vector3(-48.353495f, 2.447647f, -53.145505f), vPSTrackablesList.ToArray(),
+				NavigationController.FindPath(this, accessToken, navigationLocation, arCamera.transform.position, navigationLocation, new Vector3(-132.99f, 8.42f, 169.13f), 2.0f, vPSTrackablesList.ToArray(),
+				(paths) => {
+					MakeNavigationArrowContent(paths);
+				},
 				() => {
 					Debug.Log("No Path");
 				});
 			}
 		}
+	}
+
+	private void MakeNavigationArrowContent(Dictionary<string, PathModel[]> paths)
+    {
+		foreach(string eachTrackableName in paths.Keys)
+        {
+			foreach (VPSTrackable eachTrackable in vPSTrackablesList)
+			{
+				if(eachTrackable.localizerLocation.Contains(eachTrackableName))
+                {
+					GameObject naviGameObject = new GameObject();
+					naviGameObject.name = "Navigation";
+					naviGameObject.transform.position = new Vector3(0, 0, 0);
+					naviGameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+					naviGameObject.transform.localScale = new Vector3(1, 1, 1);
+
+					naviGameObject.transform.parent = eachTrackable.transform;
+
+					PathModel[] eachPaths = paths[eachTrackableName];
+					for (int i = 1; i < eachPaths.Length - 2; i++)
+					{
+						GameObject arrowGameObject = Instantiate(arrowPrefab);
+						arrowGameObject.transform.position = eachPaths[i].position;
+						arrowGameObject.transform.eulerAngles = arrowGameObject.transform.eulerAngles + eachPaths[i].rotation.eulerAngles;
+						arrowGameObject.transform.parent = naviGameObject.transform;
+						arrowGameObject.name = "arrow" + i;
+
+						arrowItems.Add(arrowGameObject);
+					}
+				}
+			}
+		}
+	}
+
+	private void UpdateVisibleArrow(GameObject arCameraObject)
+	{
+		foreach (GameObject eachArrowItem in arrowItems)
+		{
+			Vector3 arCameraPosition = arCameraObject.transform.position;
+			Vector3 arrowPosition = eachArrowItem.transform.position;
+
+			float distacne = Vector3.Distance(arCameraPosition, arrowPosition);
+			if (distacne > arrowVisibleDistance)
+			{
+				eachArrowItem.SetActive(false);
+			}
+			else
+			{
+				eachArrowItem.SetActive(true);
+			}
+		}
+	}
+
+	private void RemovePaths()
+	{
+		arrowItems.Clear();
+		foreach (GameObject pathObject in pathObjects)
+		{
+			Destroy(pathObject);
+		}
+		pathObjects.Clear();
 	}
 }

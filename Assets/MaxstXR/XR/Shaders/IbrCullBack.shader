@@ -3,8 +3,8 @@ Shader "Maxst/IBR Cull Back"
     Properties
     {
         _Color("Color", Color) = (1,1,1,1)
-        _MainTex("Texture1", 2D) = "white" {}
-        _MainTex2("Texture2", 2D) = "white" {}
+        _MainTex("Texture1", 2D) = "black" {}
+        _MainTex2("Texture2", 2D) = "black" {}
     }
     
     SubShader

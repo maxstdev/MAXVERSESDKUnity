@@ -10,6 +10,35 @@ namespace maxstAR
 {
     public class APIController : MonoBehaviour
     {
+
+        static internal IEnumerator GET(string url, Dictionary<string, string> headers,  int timeOut, System.Action<string> completed)
+        {
+            UnityWebRequest www = UnityWebRequest.Get(url);
+            www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+
+            foreach (KeyValuePair<string, string> header in headers)
+            {
+                string headerKey = Escape(header.Key);
+                string headerValue = Escape(header.Value);
+                www.SetRequestHeader(headerKey, headerValue);
+            }
+
+            if (timeOut > 0)
+            {
+                www.timeout = timeOut;
+            }
+
+            yield return www.SendWebRequest();
+
+            if (www.error != null)
+            {
+                completed(www.error);
+            }
+            else
+            {
+                completed(www.downloadHandler.text);
+            }
+        }
         static internal IEnumerator POST(string url, Dictionary<string, string> headers, Dictionary<string, string> parameters, int timeOut, System.Action<string> completed)
         {
             UploadHandler uploadHandler = null;

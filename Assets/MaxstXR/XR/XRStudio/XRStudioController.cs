@@ -152,10 +152,12 @@ public class XRStudioController : MaxstSingleton<XRStudioController>
         {
             GameObject local_meshObject = PrefabUtility.LoadPrefabContents(eachLoadFile);
             meshObject = Instantiate(local_meshObject);
+            meshObject.name = Path.GetFileNameWithoutExtension(eachLoadFile);
         }
 
         GameObject xrdata_object = PrefabUtility.LoadPrefabContents(xrdataPath);
         xrdata_object = Instantiate(xrdata_object);
+        xrdata_object.name = "XRPov";
         xrdata_object.transform.parent = this.transform;
     }
 

@@ -12,4 +12,7 @@ public class    PathModel
     public string transfer_name { get; set; }
 
     public float[] matrix = new float[16];
+
+    public Vector3 position { get; set; }
+    public Quaternion rotation { get; set; } 
 }

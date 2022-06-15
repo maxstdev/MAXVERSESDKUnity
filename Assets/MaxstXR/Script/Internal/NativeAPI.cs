@@ -177,6 +177,9 @@ namespace maxstAR
 
         [DllImport(MaxstARLibName)]
         public static extern int maxst_TrackerManager_getServerQueryTime(byte[] timeString);
+
+        [DllImport(MaxstARLibName)]
+        public static extern int maxst_TrackerManager_getAccessToken(byte[] accessTokenString);
         #endregion
 
         #region -- Image Extractor

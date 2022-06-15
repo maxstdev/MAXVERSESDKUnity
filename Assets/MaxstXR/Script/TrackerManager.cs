@@ -18,6 +18,7 @@ namespace maxstAR
 		private static TrackerManager instance = null;
         //private TrackingState trackingState = null;
 		private byte[] timeBytes = new byte[1000];
+		private byte[] accessTokenBytes = new byte[1000];
 
 		/// <summary>
 		/// Get TrackerManager instance
@@ -132,6 +133,14 @@ namespace maxstAR
 			NativeAPI.maxst_TrackerManager_getServerQueryTime(timeBytes);
 			
 			return Encoding.UTF8.GetString(timeBytes).TrimEnd('\0');
+		}
+
+		public string GetAccessToken()
+		{
+			Array.Clear(accessTokenBytes, 0, accessTokenBytes.Length);
+			NativeAPI.maxst_TrackerManager_getAccessToken(accessTokenBytes);
+
+			return Encoding.UTF8.GetString(accessTokenBytes).TrimEnd('\0');
 		}
 	}
 }

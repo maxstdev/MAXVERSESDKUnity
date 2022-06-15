@@ -13,145 +13,67 @@ public class NavigationController : MonoBehaviour
 {
     private static string pathURL = "http://ec2-3-34-147-254.ap-northeast-2.compute.amazonaws.com:5501";
 
-    private Vector3 startPosition;
-    private Vector3 endPosition;
-
-    public float arrowPositionDistance = 3.0f;
-    public float arrowVisibleDistance = 20.0f;
     public float arrowPathHeight = -0.5f;
-    public GameObject arrowPrefab;
 
-    private List<GameObject> pathObjects = new List<GameObject>();
-    private List<GameObject> arrowItems = new List<GameObject>();
-
-    public void UpdateVisibleArrow(GameObject arCameraObject)
-    {
-        foreach(GameObject eachArrowItem in arrowItems)
-        {
-            Vector3 arCameraPosition = arCameraObject.transform.position;
-            Vector3 arrowPosition = eachArrowItem.transform.position;
-
-            float distacne = Vector3.Distance(arCameraPosition, arrowPosition);
-            if(distacne > arrowVisibleDistance)
-            {
-                eachArrowItem.SetActive(false);
-            }
-            else
-            {
-                eachArrowItem.SetActive(true);
-            }
-        }
-    }
-
-    public static void FindPath(string startLocation, Vector3 start, string endLocation, Vector3 end,
-        Action<Dictionary<string, List<PathModel>>> success, Action fail, MonoBehaviour behaviour, string server_name = "")
+    static public void FindPath(MonoBehaviour monoBehaviour, string accessToken, string startLocation, Vector3 startPosition, string endLocation, Vector3 endPosition, float distance, VPSTrackable[] trackables, Action<Dictionary<string, PathModel[]>> success, Action fail, string serverName = "")
     {
         Dictionary<string, string> headers = new Dictionary<string, string>()
         {
+            { "Authorization", accessToken},
             { "Content-Type", "application/json"}
         };
 
-        string startPositionString = start.x + "," + start.z + "," + start.y;
-        string endPositionString = end.x + "," + (end.z) + "," + (end.y);
+        string startPositionString = startPosition.x + "," + startPosition.z + "," + startPosition.y;
+        string endPositionString = endPosition.x + "," + endPosition.z + "," + endPosition.y;
         Dictionary<string, string> parameters = new Dictionary<string, string>()
         {
             { "start_location", startLocation },
             { "start_position", startPositionString},
             { "end_location", endLocation },
             { "end_position", endPositionString},
-            { "server_name", server_name}
+            { "server_name", serverName}
         };
 
-//#if UNITY_EDITOR
-//        EditorCoroutineUtility.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
-//        {
-//            if (resultString != "")
-//            {
-//                PathModel[] paths = JsonReader.Deserialize<PathModel[]>(resultString);
-//                Dictionary<string, List<PathModel>> pathDictionary = new Dictionary<string, List<PathModel>>();
-//                foreach (PathModel eachPathModel in paths)
-//                {
-//                    if (!pathDictionary.ContainsKey(eachPathModel.location))
-//                    {
-//                        pathDictionary[eachPathModel.location] = new List<PathModel>();
-//                    }
-//                    List<PathModel> pathList = pathDictionary[eachPathModel.location];
-//                    if (pathList == null)
-//                    {
-//                        pathList = new List<PathModel>();
-//                    }
-
-//                    pathList.Add(eachPathModel);
-//                }
-//                success(pathDictionary);
-//            }
-//            else
-//            {
-//                fail();
-//            }
-
-//        }), behaviour);
-//#else
-        behaviour.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
+        monoBehaviour.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
         {
-            if(resultString != "")
+            if (resultString != "")
             {
+                Debug.Log(resultString);
                 PathModel[] paths = JsonReader.Deserialize<PathModel[]>(resultString);
                 Dictionary<string, List<PathModel>> pathDictionary = new Dictionary<string, List<PathModel>>();
-                foreach(PathModel eachPathModel in paths)
+                foreach (PathModel eachPathModel in paths)
                 {
-                    if(!pathDictionary.ContainsKey(eachPathModel.location))
+                    if (!pathDictionary.ContainsKey(eachPathModel.location))
                     {
                         pathDictionary[eachPathModel.location] = new List<PathModel>();
                     }
                     List<PathModel> pathList = pathDictionary[eachPathModel.location];
-                    if(pathList == null)
+                    if (pathList == null)
                     {
                         pathList = new List<PathModel>();
                     }
-
                     pathList.Add(eachPathModel);
                 }
-                success(pathDictionary);
+
+                Dictionary<string, PathModel[]> returnPathDictionary = new Dictionary<string, PathModel[]>();
+                foreach (string eachLocation in pathDictionary.Keys)
+                {
+                    List<PathModel> eachPaths = pathDictionary[eachLocation];
+                    PathModel[] optimization = MakeOptimizePath(eachPaths.ToArray(), distance);
+                    returnPathDictionary[eachLocation] = optimization;
+                }
+                success(returnPathDictionary);
             }
             else
             {
                 fail();
             }
         }));
-//#endif
     }
 
-
-    public void MakePath(string start_location, Vector3 start_position, string end_location, Vector3 end_position, VPSTrackable[] trackables, Action fail, string serverName = "")
+    static private PathModel[] MakeOptimizePath(PathModel[] paths, float distance)
     {
-        startPosition = start_position;
-        endPosition = end_position;
-
-        FindPath(start_location, startPosition, end_location, endPosition, (paths) =>
-        {
-            RemovePaths();
-
-            // Make Navigation Path use paths parameter.
-        },
-        () =>
-        {
-            fail();
-        }, this);
-    }
-
-    public void RemovePaths()
-    {
-        arrowItems.Clear();
-        foreach(GameObject pathObject in pathObjects)
-        {
-            Destroy(pathObject);
-        }
-        pathObjects.Clear();
-    }
-
-    private GameObject MakeArrowPath(PathModel[] paths, GameObject arContent)
-    {
+        List<PathModel> returnPathModel = new List<PathModel>();
         List<Vector3> vectors = new List<Vector3>();
         foreach (PathModel eachModel in paths)
         {
@@ -160,7 +82,7 @@ public class NavigationController : MonoBehaviour
 
         List<Vector3> positions = new List<Vector3>();
         List<Vector3> directions = new List<Vector3>();
-        CalculateMilestones(vectors, positions, directions, arrowPositionDistance, true);
+        CalculateMilestones(vectors, positions, directions, distance, true);
 
         List<Vector3> convertVectorPath = new List<Vector3>();
         for (int i = 0; i < positions.Count; i++)
@@ -170,40 +92,24 @@ public class NavigationController : MonoBehaviour
             convertVectorPath.Add(pathPoint);
         }
 
-
-        GameObject naviGameObject = new GameObject();
-        naviGameObject.name = "Navigation";
-        naviGameObject.transform.position = new Vector3(0, 0, 0);
-        naviGameObject.transform.eulerAngles = new Vector3(0, 0, 0);
-        naviGameObject.transform.localScale = new Vector3(1, 1, 1);
-
-        naviGameObject.transform.parent = arContent.transform;
-
-        Dictionary<GameObject, Dictionary<GameObject, float>> intersectionGameObjects = new Dictionary<GameObject, Dictionary<GameObject, float>>();
-
-
         for (int i = 1; i < convertVectorPath.Count - 2; i++)
         {
-            Vector3 first = convertVectorPath[i] + new Vector3(0.0f, arrowPathHeight, 0.0f);
-            Vector3 second = convertVectorPath[i + 1] + new Vector3(0.0f, arrowPathHeight, 0.0f);
+            Vector3 first = convertVectorPath[i];
+            Vector3 second = convertVectorPath[i + 1];
 
             Vector3 vec = first - second;
             vec.Normalize();
             Quaternion q = Quaternion.LookRotation(vec);
 
-            GameObject arrowGameObject = Instantiate(arrowPrefab);
-            arrowGameObject.transform.position = first;
-            arrowGameObject.transform.eulerAngles = arrowGameObject.transform.eulerAngles + q.eulerAngles;
-            arrowGameObject.transform.parent = naviGameObject.transform;
-            arrowGameObject.name = "arrow" + i;
-     
-            arrowItems.Add(arrowGameObject);
+            PathModel pathModel = new PathModel();
+            pathModel.position = convertVectorPath[i];
+            returnPathModel.Add(pathModel);
         }
 
-        return naviGameObject;
+        return returnPathModel.ToArray();
     }
-    
-    private Vector3 DivideBetweenTwoPoints(in Vector3 from, in Vector3 to, double ratio)
+
+    static private Vector3 DivideBetweenTwoPoints(in Vector3 from, in Vector3 to, double ratio)
     {
         Vector3 res = new Vector3(0, 0, 0);
         if (ratio < 0.0 || ratio > 1.0)
@@ -213,7 +119,7 @@ public class NavigationController : MonoBehaviour
         return res;
     }
 
-    private void InterpolateByBezier(out Vector3 p, out Vector3 d, in Vector3 p0, in Vector3 p1, in Vector3 p2, double t)
+    static private void InterpolateByBezier(out Vector3 p, out Vector3 d, in Vector3 p0, in Vector3 p1, in Vector3 p2, double t)
     {
         double one_minus_t = 1.0 - t;
         p = (float)(one_minus_t * one_minus_t) * p0 + (float)(2.0 * t * one_minus_t) * p1 + (float)(t * t) * p2;
@@ -221,7 +127,7 @@ public class NavigationController : MonoBehaviour
         d.Normalize();
     }
 
-    private void CalculateMilestones(List<Vector3> path, in List<Vector3> pos, in List<Vector3> dir, double interval, bool useBezier)
+    static private void CalculateMilestones(List<Vector3> path, in List<Vector3> pos, in List<Vector3> dir, double interval, bool useBezier)
     {
         double totalDist = 0.0;
         List<double> dists = new List<double>();

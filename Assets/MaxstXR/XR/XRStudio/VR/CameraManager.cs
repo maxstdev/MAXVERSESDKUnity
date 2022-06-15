@@ -202,7 +202,7 @@ public class CameraManager : MonoBehaviour
             }
             var angles = transform.eulerAngles;
             var symmetricX = Mathf.Asin(Mathf.Sin(Mathf.Deg2Rad * angles.x)) * Mathf.Rad2Deg;
-            angles.x = Mathf.Clamp(symmetricX, -30f, 45f - Camera.fieldOfView / 2f);
+            angles.x = Mathf.Clamp(symmetricX, -30f, 35f - Camera.fieldOfView / 2f);
             transform.rotation = Quaternion.Euler(angles);
         }
     }
