@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 09fc60c66f48041b0b285521e0b737b5
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 29de2f49591524948b1f11a20a3bb2a7, type: 3}
+  Atn: {fileID: 1274396968670786129, guid: 7fae8f60e9f5745ae9fa9fdc236edb65, type: 3}
+  NearClipPlane: 0.01
+  FarClipPlane: 100

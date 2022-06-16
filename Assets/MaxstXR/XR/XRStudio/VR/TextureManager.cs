@@ -174,31 +174,31 @@ public class TextureManager : MonoBehaviour
         ProcessScheduledUnloading();
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        var texturePath = GetTexturePath(other);
-        if (IsNotLoaded(texturePath))
-        {
-            ScheduleLoading(texturePath);
-        }
-        else if (WillBeUnloaded(texturePath))
-        {
-            UnscheduleUnloading(texturePath);
-        }
-    }
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    var texturePath = GetTexturePath(other);
+    //    if (IsNotLoaded(texturePath))
+    //    {
+    //        ScheduleLoading(texturePath);
+    //    }
+    //    else if (WillBeUnloaded(texturePath))
+    //    {
+    //        UnscheduleUnloading(texturePath);
+    //    }
+    //}
 
-    void OnTriggerExit(Collider other)
-    {
-        var texturePath = GetTexturePath(other);
-        if (IsLoaded(texturePath))
-        {
-            ScheduleUnloading(texturePath);
-        }
-        else if (WillBeLoaded(texturePath))
-        {
-            UnscheduleLoading(texturePath);
-        }
-    }
+    //void OnTriggerExit(Collider other)
+    //{
+    //    var texturePath = GetTexturePath(other);
+    //    if (IsLoaded(texturePath))
+    //    {
+    //        ScheduleUnloading(texturePath);
+    //    }
+    //    else if (WillBeLoaded(texturePath))
+    //    {
+    //        UnscheduleLoading(texturePath);
+    //    }
+    //}
 
     #endregion
 
@@ -297,7 +297,8 @@ public class TextureManager : MonoBehaviour
         if (LoadingQueue.Contains(texturePath)) { return; }
 
         if (LoadingInProgress.Contains(texturePath)) { return; }
-        
+
+        if(texturePath == "" ) { return; }
         LoadingQueue.Add(texturePath);
     }
     

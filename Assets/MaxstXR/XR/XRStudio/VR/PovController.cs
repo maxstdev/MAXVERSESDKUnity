@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -50,16 +52,17 @@ public class PovController : MonoBehaviour, IPov
         Gizmos.matrix = originalMatrix;
     }
 
-    public void StartPlace()
-    {
-        //var self = (PovController)this;
-        //var parentTransform = self.transform.parent.parent;
-
-        //// update camera position
-        //cameraGo.transform.position = self.transform.position;
-
-        //// make the pov become the starting point
-        //await parentTransform.GetComponent<IbrManager>().StartFrom(self);
-    }
 #endif
+
+    async public void StartPlace()
+    {
+        var self = (PovController)this;
+        var cameraGo = GameObject.FindWithTag("360Camera");
+        var parentTransform = self.transform.parent.parent;
+
+        // update camera position
+        cameraGo.transform.position = self.transform.position;
+
+        await parentTransform.GetComponent<IbrManager>().StartFrom(self);
+    }
 }

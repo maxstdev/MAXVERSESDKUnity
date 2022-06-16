@@ -26,7 +26,6 @@ namespace maxstAR
         private const string Yuv420NonRG16ShaderName = "MaxstAR/Yuv420NonRG16Background";
 
         private static AbstractCameraBackgroundBehaviour instance = null;
-        private int prevImageIndex = int.MaxValue;
         private bool textureCreateDone = false;
 
         internal static AbstractCameraBackgroundBehaviour Instance

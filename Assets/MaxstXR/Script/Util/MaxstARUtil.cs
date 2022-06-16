@@ -23,20 +23,6 @@ namespace maxstAR
         internal const int NATIVE_RENDER_EVENT_DRAW_ZOMBIE_GL = 0x20000;
         internal const int NATIVE_RENDER_EVENT_DRAW_ZOMBIE_DX = 0x20001;
 
-        public static IEnumerator LoadImageFromFileWithSizeAndTexture(string path, System.Action<int, int, Texture2D> complete)
-        {
-            WWW img_load = new WWW("file://" + path);
-
-            yield return img_load;
-
-            Texture2D texture = (Texture2D)img_load.texture;
-
-            if (complete != null)
-            {
-                complete(texture.width, texture.height, texture);
-            }
-        }
-
         public static string ChangeNewLine(string originalText)
         {
             return originalText.Replace("\\n", "\n");

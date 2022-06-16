@@ -7,7 +7,7 @@ using System;
 
 public class POIController : MonoBehaviour
 {
-    static string serverURL = "http://dev-api-poi-customer.maxverse.io";
+    static string serverURL = "https://beta-api-poi-customer.maxverse.io";
     public static void GetPOI(MonoBehaviour monoBehaviour, string accessToken, int placeId, Action<POIData[]> success, Action fail)
     {
         Dictionary<string, string> headers = new Dictionary<string, string>()
@@ -20,7 +20,6 @@ public class POIController : MonoBehaviour
         {
             if (resultString != "")
             {
-                Debug.Log(resultString);
                 POIData[] pois = JsonReader.Deserialize<POIData[]>(resultString);
                 success(pois);
             }

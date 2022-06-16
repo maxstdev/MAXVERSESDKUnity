@@ -31,7 +31,7 @@ namespace maxstAR
 
 		private int screenWidth = 0;
 		private int screenHeight = 0;
-		private ScreenOrientation orientation = ScreenOrientation.Unknown;
+		private ScreenOrientation orientation;
 		private float nearClipPlane = 0.0f;
 		private float farClipPlane = 0.0f;
 		private Camera arCamera = null;

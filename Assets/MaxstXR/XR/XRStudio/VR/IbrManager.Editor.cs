@@ -16,6 +16,10 @@ public partial class IbrManager : MonoBehaviour
         _frameNames[0] = pov.Name;
         _frameViewMatrices[0] = pov.WorldToLocalMatrix;
         _frameTextureInEditor = await TextureManager.LoadTexture(pov.Spot, pov.Name);
+        IbrCullBack.SetVector("_runtimeData", new Vector4(1, 0, 0, 0));
+
+        UpdateMaterialEditor(IbrCullBack);
+        UpdateMaterialEditor(IbrCullFront);
     }
 
     public void Update()
@@ -23,7 +27,7 @@ public partial class IbrManager : MonoBehaviour
         if (Application.isEditor && !Application.isPlaying)
         {
             IbrCullBack.SetVector("_runtimeData", new Vector4(1, 0, 0, 0));
-
+            IbrCullBack.SetColor("_Color", meshColor);
             UpdateMaterialEditor(IbrCullBack);
             UpdateMaterialEditor(IbrCullFront);
         }

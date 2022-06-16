@@ -81,7 +81,7 @@ namespace maxstAR
 
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError)
+            if (www.error != null && www.error != "")
             {
                 completed(www.error);
             }
@@ -108,38 +108,6 @@ namespace maxstAR
             text = text.Replace("(", "&#40");
             text = text.Replace(")", "&#41");
             return text;
-        }
-
-        static internal IEnumerator DownloadFile(string url, string saveLocalPath, System.Action<string> completed)
-        {
-            WWW downloadWWW = new WWW(url);
-
-            yield return downloadWWW;
-
-            if (downloadWWW.error == null)
-            {
-                string folderPath = Path.GetDirectoryName(saveLocalPath);
-
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                if (!File.Exists(saveLocalPath))
-                {
-                    FileStream fileStream = new FileStream(saveLocalPath, FileMode.CreateNew);
-                    BinaryWriter binaryWriter = new BinaryWriter(fileStream);
-                    binaryWriter.Write(downloadWWW.bytes);
-                    binaryWriter.Close();
-                    fileStream.Close();
-                }
-
-                completed(saveLocalPath);
-            }
-            else
-            {
-                completed(null);
-            }
         }
     }
 }

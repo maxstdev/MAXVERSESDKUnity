@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 7fae8f60e9f5745ae9fa9fdc236edb65
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: dacf28f1dc3454a4b8d1294fd920cb61, type: 3}
+  FilteringRules:
+  - Comment: "(1) \uFFFD\uFFFD \uFFFD\uFFFD\uFFFD\uFFFD \uFFFD\uFFFD \uFFFD\u03F3\uFFFD\uFFFD\uFFFD
+      \uFFFD\uFFFD\uFFFD\uFFFD\u03F4\uFFFD."
+    Pattern: _0.png
+    Operation: 2
+  RenamingRules:
+  - Comment: "(1) Insta360Stitcher\uFFFD\uFFFD \uFFFD\uFFFD\uFFFD\u0334\uFFFD \u0178\uFFFD\u04FD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD
+      \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0574\u03F4\uFFFD."
+    Pattern: (_[0-9]{2}){6}
+    Replacement: 
+  - Comment: "(2) \u022E\uFFFD\uFFFD\uFFFD\u06B8\uFFFD \uFFFD\u063D\uFFFD\xF3 \uFFFD\uFFFD\uFFFD\u03FF\uFFFD
+      \uFFFD\xB5\uFFFD\uFFFD\uFFFD \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0574\u03F4\uFFFD."
+    Pattern: _0.png
+    Replacement: .ktx2

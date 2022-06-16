@@ -142,7 +142,7 @@ public class CameraManager : MonoBehaviour
             if (Moving) { FinishAnimating(); }
         }
     }
-    
+
     void Start()
     {
         if (!isARMode)

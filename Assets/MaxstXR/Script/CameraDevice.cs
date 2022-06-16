@@ -157,10 +157,6 @@ namespace maxstAR
             return instance;
         }
 
-        private int cameraId = 0;
-        private int preferredWidth = 0;
-        private int preferredHeight = 0;
-
         private CameraDevice()
         {
         }

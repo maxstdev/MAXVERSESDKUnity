@@ -11,7 +11,7 @@ using JsonFx.Json;
 
 public class NavigationController : MonoBehaviour
 {
-    private static string pathURL = "http://ec2-3-34-147-254.ap-northeast-2.compute.amazonaws.com:5501";
+    private static string pathURL = "https://beta-api-vps.maxverse.io";
 
     public float arrowPathHeight = -0.5f;
 
@@ -31,14 +31,13 @@ public class NavigationController : MonoBehaviour
             { "start_position", startPositionString},
             { "end_location", endLocation },
             { "end_position", endPositionString},
-            { "server_name", serverName}
+            { "placeUnamePiece", serverName}
         };
 
         monoBehaviour.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
         {
-            if (resultString != "")
+            if (resultString != null && resultString != "")
             {
-                Debug.Log(resultString);
                 PathModel[] paths = JsonReader.Deserialize<PathModel[]>(resultString);
                 Dictionary<string, List<PathModel>> pathDictionary = new Dictionary<string, List<PathModel>>();
                 foreach (PathModel eachPathModel in paths)
@@ -103,6 +102,7 @@ public class NavigationController : MonoBehaviour
 
             PathModel pathModel = new PathModel();
             pathModel.position = convertVectorPath[i];
+            pathModel.rotation = q;
             returnPathModel.Add(pathModel);
         }
 

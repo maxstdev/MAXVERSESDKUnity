@@ -21,7 +21,7 @@ public class POIData
 
     public Vector3 GetVPSPosition()
     {
-        return new Vector3(vps_x, vps_y, vps_z);
+        return new Vector3(vps_x, vps_z, vps_y);
     }
 }
 

@@ -27,7 +27,10 @@ public partial class IbrManager : MonoBehaviour
     private UnityEvent _onEnable;
     [SerializeField]
     private Material IbrCullBack, IbrCullFront;
-    
+
+    [SerializeField]
+    private Color meshColor;
+
     [SerializeField]
     private Vector4 _frameData = Vector4.zero;
     
@@ -45,7 +48,6 @@ public partial class IbrManager : MonoBehaviour
 
     #endregion
 
-    private Color beforeColor;
 
     public void SetPov(IPov pov, PovType povType) {
         var index = (uint) povType;
@@ -66,6 +68,7 @@ public partial class IbrManager : MonoBehaviour
 
     protected virtual void Awake()
     {
+        IbrCullBack.SetColor("_Color", new Color(0, 0, 0, 0));
         IbrCullBack.SetVector("_runtimeData", new Vector4(0, 0, 0, 0));
     }
 
@@ -76,6 +79,7 @@ public partial class IbrManager : MonoBehaviour
         await UntilReady(PovType.Primary);
         _onEnable.Invoke();
         UpdateMaterials();
+
     }
 
     #endregion
