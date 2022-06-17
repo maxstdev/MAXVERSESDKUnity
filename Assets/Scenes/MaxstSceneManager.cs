@@ -40,13 +40,6 @@ public class MaxstSceneManager : MonoBehaviour
 		QualitySettings.vSyncCount = 0;
 		Application.targetFrameRate = 60;
 
-		
-		AndroidRuntimePermissions.Permission[] result = AndroidRuntimePermissions.RequestPermissions("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA", "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION");
-		if (result[0] == AndroidRuntimePermissions.Permission.Granted && result[1] == AndroidRuntimePermissions.Permission.Granted)
-			Debug.Log("We have all the permissions!");
-		else
-			Debug.Log("Some permission(s) are not granted...");
-
 		ARManager arManagr = FindObjectOfType<ARManager>();
 		if (arManagr == null)
 		{
@@ -58,13 +51,7 @@ public class MaxstSceneManager : MonoBehaviour
 			arCamera = arManagr.gameObject;
 		}
 
-		cameraBackgroundBehaviour = arManagr.GetCameraBackgroundBehaviour();
-		if (cameraBackgroundBehaviour == null)
-		{
-			Debug.LogError("Can't find CameraBackgroundBehaviour.");
-			return;
-		}
-
+		
 		VPSTrackable[] vPSTrackables = FindObjectsOfType<VPSTrackable>(true);
 		if (vPSTrackables != null)
 		{
@@ -85,7 +72,20 @@ public class MaxstSceneManager : MonoBehaviour
 
 		if (XRStudioController.Instance.ARMode)
 		{
-			foreach(VPSTrackable vPSTrackable in vPSTrackablesList)
+			AndroidRuntimePermissions.Permission[] result = AndroidRuntimePermissions.RequestPermissions("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA", "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION");
+			if (result[0] == AndroidRuntimePermissions.Permission.Granted && result[1] == AndroidRuntimePermissions.Permission.Granted)
+				Debug.Log("We have all the permissions!");
+			else
+				Debug.Log("Some permission(s) are not granted...");
+
+			cameraBackgroundBehaviour = arManagr.GetCameraBackgroundBehaviour();
+			if (cameraBackgroundBehaviour == null)
+			{
+				Debug.LogError("Can't find CameraBackgroundBehaviour.");
+				return;
+			}
+
+			foreach (VPSTrackable vPSTrackable in vPSTrackablesList)
             {
 				vPSTrackable.gameObject.SetActive(false);
             }
@@ -93,7 +93,11 @@ public class MaxstSceneManager : MonoBehaviour
 		else
         {
 			this.enabled = false;
-			startPov.StartPlace();
+
+			if(startPov != null)
+            {
+				startPov.StartPlace();
+			}
 		}
 	}
 

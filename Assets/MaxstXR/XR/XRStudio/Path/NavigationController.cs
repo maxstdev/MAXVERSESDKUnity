@@ -34,7 +34,7 @@ public class NavigationController : MonoBehaviour
             { "placeUnamePiece", serverName}
         };
 
-        monoBehaviour.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
+        monoBehaviour.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 5, (resultString) =>
         {
             if (resultString != null && resultString != "")
             {

@@ -54,7 +54,7 @@ public class PovController : MonoBehaviour, IPov
 
 #endif
 
-    async public void StartPlace()
+    public async void StartPlace()
     {
         var self = (PovController)this;
         var cameraGo = GameObject.FindWithTag("360Camera");

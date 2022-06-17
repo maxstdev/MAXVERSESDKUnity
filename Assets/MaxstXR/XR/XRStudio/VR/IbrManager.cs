@@ -46,7 +46,31 @@ public partial class IbrManager : MonoBehaviour
     [SerializeField]
     private string[] _frameNames = new string[2];
 
+    [SerializeField]
+    private Texture2D _frameTextureInEditor = null;
+
     #endregion
+
+    public async Task StartFrom(IPov pov)
+    {
+        _frameData.x = 0.0f;
+        _frameSpots[0] = pov.Spot;
+        _frameNames[0] = pov.Name;
+        _frameViewMatrices[0] = pov.WorldToLocalMatrix;
+        _frameTextureInEditor = await TextureManager.LoadTexture(pov.Spot, pov.Name);
+        IbrCullBack.SetVector("_runtimeData", new Vector4(1, 0, 0, 0));
+
+        UpdateMaterialEditor(IbrCullBack);
+        UpdateMaterialEditor(IbrCullFront);
+    }
+
+    private void UpdateMaterialEditor(Material m)
+    {
+        SetFrameData(m, _frameData);
+        SetFrameViewMatrices(m, _frameViewMatrices);
+        if (null != _frameTextureInEditor)
+            SetFrameTextureCurrent(m, _frameTextureInEditor);
+    }
 
 
     public void SetPov(IPov pov, PovType povType) {
