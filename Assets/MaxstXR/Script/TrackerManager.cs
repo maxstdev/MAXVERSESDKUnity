@@ -46,6 +46,11 @@ namespace maxstAR
             NativeAPI.maxst_TrackerManager_startTracker();
 		}
 
+		public void SetSecretIdSecretKey(string secretId, string secretKey)
+		{
+			NativeAPI.maxst_TrackerManager_setSecretIdSecretKey(secretId, secretKey);
+		}
+
 		/// <summary>Stop Tracker.</summary>
 		public void StopTracker()
 		{
@@ -110,9 +115,9 @@ namespace maxstAR
         }
 
 		/// <summary>Update ARFrame.</summary>
-		public void UpdateFrame()
+		public void UpdateFrame(bool isTexture)
 		{
-			NativeAPI.maxst_TrackerManager_updateFrame();
+			NativeAPI.maxst_TrackerManager_updateFrame(isTexture);
 		}
 
 		/// <summary>Get ARFrame. must be call after UpdateFrame function.</summary>

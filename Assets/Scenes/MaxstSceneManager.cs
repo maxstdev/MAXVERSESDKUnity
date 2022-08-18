@@ -18,8 +18,6 @@ public class MaxstSceneManager : MonoBehaviour
 	public Material buildingMaterial;
 	public Material runtimeBuildingMaterial;
 
-	public GameObject maxstLogObject;
-
 	public bool isOcclusion = true;
 	private string currentLocalizerLocation = "";
 	private int currentLocalizerPlaceId = -1;
@@ -166,18 +164,19 @@ public class MaxstSceneManager : MonoBehaviour
 		}
 		
 		TrackerManager.GetInstance().StartTracker();
+		//TrackerManager.GetInstance().SetSecretIdSecretKey("secretid", "secretkey");
 	}
 
 	void Update()
 	{
-		UpdateVisibleArrow(arCamera);
+		//UpdateVisibleArrow(arCamera);
 
 		if (!XRStudioController.Instance.ARMode)
         {
 			return;
         }
 
-		TrackerManager.GetInstance().UpdateFrame();
+		TrackerManager.GetInstance().UpdateFrame(true);
 
 		ARFrame arFrame = TrackerManager.GetInstance().GetARFrame();
 
@@ -349,7 +348,7 @@ public class MaxstSceneManager : MonoBehaviour
 		if (!XRStudioController.Instance.ARMode)
 		{
 			VPSTrackable eachTrackable = vPSTrackablesList[0];
-			NavigationController.FindPath(this, accessToken, "insadong_outdoor", arCamera.transform.position, "insadong_outdoor", new Vector3(10.4904403687f, -0.1800000072f, 27.6305427551f), 2.0f, vPSTrackablesList.ToArray(),
+			NavigationController.FindPath(this, accessToken, eachTrackable.navigationLocation, arCamera.transform.position, eachTrackable.navigationLocation, new Vector3(10.4904403687f, -0.1800000072f, 27.6305427551f), 2.0f, vPSTrackablesList.ToArray(),
 				(paths) => {
 					MakeNavigationArrowContent(paths);
 				},
@@ -377,7 +376,7 @@ public class MaxstSceneManager : MonoBehaviour
 
 			if (trackingObject != null)
 			{
-				NavigationController.FindPath(this, accessToken, "insadong_outdoor", arCamera.transform.position, "insadong_outdoor", new Vector3(10.4904403687f, -0.1800000072f, 27.6305427551f), 2.0f, vPSTrackablesList.ToArray(),
+				NavigationController.FindPath(this, accessToken, navigationLocation, arCamera.transform.position, navigationLocation, new Vector3(10.4904403687f, -0.1800000072f, 27.6305427551f), 2.0f, vPSTrackablesList.ToArray(),
 				(paths) => {
 					MakeNavigationArrowContent(paths);
 				},

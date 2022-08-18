@@ -158,6 +158,9 @@ namespace maxstAR
         public static extern void maxst_TrackerManager_refreshTracker();
 
         [DllImport(MaxstARLibName)]
+        public static extern void maxst_TrackerManager_setSecretIdSecretKey(string secretId, string secretKey);
+
+        [DllImport(MaxstARLibName)]
         public static extern void maxst_TrackerManager_addTrackerData(string trackingFileName, bool isAndroidAssetFile = false);
 
         [DllImport(MaxstARLibName)]
@@ -170,7 +173,7 @@ namespace maxstAR
         public static extern void maxst_TrackerManager_loadTrackerData();
 
         [DllImport(MaxstARLibName)]
-        public static extern void maxst_TrackerManager_updateFrame();
+        public static extern void maxst_TrackerManager_updateFrame(bool isTexture);
         
         [DllImport(MaxstARLibName)]
         public static extern ulong maxst_TrackerManager_getARFrame();
